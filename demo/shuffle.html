@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+	<style type="text/css">
+
+		p {
+			clear:both;
+			margin: 0;
+			line-height: 20px;
+		}
+
+		.stage {
+			transform: perspective(800px);
+			-webkit-transform: perspective(800px);
+			width: 50px;
+			height: 50px;
+			border: solid 1px black;
+			float:left;
+			margin-left: 1px;
+		}
+
+		.container {
+
+			width: 50px;
+			height: 50px;
+			transition: 1s;	
+			transform-style: preserve-3d;
+			-webkit-transition: 1s;
+			-webkit-transform-style: preserve-3d;
+
+		}
+
+		.div-base {
+			width: 50px;
+			height: 50px;
+			border-style: solid;
+			border: 1px;
+			border-color: black;
+			text-align: center;
+			line-height: 49px;
+			font-size: 200; 
+			position:absolute;
+			backface-visibility: hidden;
+			transition: 1s;
+			-webkit-transition: 1s;	
+		}
+
+		.div0 {
+			color: white;
+			background-color: black;
+			transform: translateZ(25px) rotateX(0deg); 
+			-webkit-transform: translateZ(25px) rotateX(0deg); 
+		}
+		.div1 {
+			color: white;
+			background-color: palevioletred  ;
+			transform: translateY(-25px) rotateX(90deg);
+			-webkit-transform: translateY(-25px) rotateX(90deg);
+		}
+		.div2 {
+			color: white;
+			background-color: seagreen  ;
+			transform: translateZ(-25px) rotateX(180deg);
+			-webkit-transform: translateZ(-25px) rotateX(180deg);
+		}
+		.div3 {
+			color: white;
+			background-color: dodgerblue ;
+			transform: translateY(25px) rotateX(270deg);
+			-webkit-transform: translateY(25px) rotateX(270deg);
+		}
+
+	</style>
+</head>
+<body>
+	<div class="stage">
+	<div id="container_hundreds" class="container">
+		<div class="div-hundred-0 div-base div0">0</div>
+		<div class="div-hundred-1 div-base div1">1</div>
+		<div class="div-hundred-2 div-base div2">2</div>
+		<div class="div-hundred-3 div-base div3">3</div>
+	</div>
+	</div>
+	<div class="stage">
+	<div id="container_tens" class="container">
+		<div class="div-ten-0 div-base div0">0</div>
+		<div class="div-ten-1 div-base div1">1</div>
+		<div class="div-ten-2 div-base div2">2</div>
+		<div class="div-ten-3 div-base div3">3</div>
+	</div>
+	</div>
+	<div id="stage" class="stage">
+	<div id="container_bits" class="container">
+		<div class="div-bit-0 div-base div0">0</div>
+		<div class="div-bit-1 div-base div1">0</div>
+		<div class="div-bit-2 div-base div2">0</div>
+		<div class="div-bit-3 div-base div3">0</div>
+	</div>
+	</div>
+	<p>
+	<label for="initial">设定初始值(000-999)</label>
+	</p>
+	<p>
+	<input id="initial" type="text"></input>
+	<button id="initial-submit">click me!</button>
+	</p>
+</body>
+
+	<script type="text/javascript">
+	
+		var x = 1; //当前数值
+		function transform(element,value,key) {
+			var naviversion = navigator.appVersion;
+			key = naviversion.indexOf('Chrome') ? '-webkit-transform' : 'transform';
+			element.style[key] = value;
+			return element; 
+		}
+
+		function changeword(element,key){
+			element.innerHTML = key % 10;
+		}
+
+		$ = function(selector) {
+			return document.querySelector(selector);
+		}
+
+
+		var container_bits = $('#container_bits');
+		var container_tens = $('#container_tens');
+		var container_hundreds = $('#container_hundreds');
+
+		$('#initial-submit').onclick = function(){
+			var initial_number = $('#initial').value;
+			if( initial_number >= 0 && initial_number <= 999)
+				x = initial_number;
+			else 
+				return alert('请输入范围内的数字');
+		}
+
+		$('#stage').addEventListener("click",function(){
+			var bit = x % 4;
+			var ten = Math.floor(x/10) % 4;
+			var hundred = Math.floor(x/100) % 4;
+			var bitdiv = $('.div-bit-'+bit);
+			var tendiv = $('.div-ten-'+ten);
+			var hundreddiv = $('.div-hundred-'+hundred);
+			changeword(bitdiv,x);
+			changeword(tendiv,Math.floor(x/10));
+			changeword(hundreddiv,Math.floor(x/100));
+			transform(container_bits,"rotateX("+ x % 20 * (-90) +"deg)");
+			transform(container_tens,"rotateX("+ ten * (-90) +"deg)");
+			transform(container_hundreds,"rotateX("+ hundred * (-90)+"deg)");
+			x++;
+		});
+	</script>
+
+</html>
