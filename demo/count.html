@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>a counter with animation</title>
+</head>
+<body>
+<div id="counterbox">
+	<h2 id="counter">233</h2>
+</div>
+<input id="start-offset" type="text"></input>
+<input id="end-offset" type="text"></input>
+<button id="start">start</button>
+<button id="reset">reset</button>
+</body>
+<script type="text/javascript">
+
+	var startnumber;
+	var endnumber;
+	var target = document.querySelector('#counter');
+	var isSubtractive = false;
+
+
+	function bindElements(){
+		startnumber = document.querySelector('#start-offset').value;
+    	endnumber = document.querySelector('#end-offset').value;
+    	isSubtractive = startnumber > endnumber ? true : false;
+    	console.log(isSubtractive); 
+	}
+
+
+  	function printNumber(number){
+		target.innerText = number;
+	}
+
+	function numberFormat(number){
+		return Math.round(number);
+	}
+
+	function count(targetid,startnumber,endnumber,isSubtractive,duration){
+
+		var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || 
+		window.msRequestAnimationFrame; //兼容性
+		var start = 0;
+		var target = document.querySelector('#'+targetid)
+		duration = duration || 100;
+		var number;
+		var print;
+		function circEasyOut(t,b,c,d){ //圆形曲线的缓动函数，参考github tween.js
+			return c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
+		}
+
+		function step(timestamp){
+			start++;
+			if(isSubtractive){
+				var i = circEasyOut(start,startnumber,startnumber-endnumber,duration); //offset value
+				print = startnumber - i;
+			}else{
+				print = circEasyOut(start,startnumber,endnumber-startnumber,duration);
+			}
+			print = numberFormat(print);
+
+			if(isSubtractive){
+				print = print > endnumber ? print : endnumber;
+			}else{
+				print = print < endnumber ? print : endnumber;
+			}
+			
+			printNumber(print);
+			if(start < duration) requestAnimationFrame(step);
+		}
+		requestAnimationFrame(step); 
+	}
+
+	function reset(){
+
+	    startnumber = document.querySelector('#start-offset').value = 0;
+    	endnumber = document.querySelector('#end-offset').value = 0;
+    	printNumber(0);
+    }
+
+    function start(){
+    	bindElements();
+    	count('target',startnumber,endnumber,isSubtractive,100);
+    }
+
+    document.querySelector('#start').onclick = start;
+    document.querySelector('#reset').onclick = reset;
+
+</script>
+</html>
