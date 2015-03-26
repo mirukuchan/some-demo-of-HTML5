@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"></meta>
+	<title></title>
+	<style type="text/css">
+		#circle-box {
+			position: relative;
+			height: 400px;
+			width: 400px;
+			background-color: #000;
+		}
+
+		.circle {
+			display: block;
+			position: relative;
+			width: 100px;
+			height: 50px;
+			border-radius: 50%;
+			border-shadow: 0 0 30px rgba(0,0,0,0.5); 
+		}
+
+		#harf-circle-top {
+			border-top: 50px solid #fff;
+			left: 37.5%;
+			top: 150px;
+		}
+
+		#harf-circle-bottom {
+			border-bottom: 50px solid #fff;
+			left: 37.5%;
+			top: 50px;
+		}
+
+		#add-text {
+			position: absolute;
+			left: 40%;
+			top: 192px;
+			width: 80px;
+			text-align: center;
+			z-index: 1;
+			font-family: "微软雅黑";
+			color: rgba(255, 255, 255, 0);
+			transition: transform ease-out 0.2s;
+		}
+
+		#add-text:hover {
+			transform : scale(1.2,1.2);
+			cursor: 
+		}
+
+		@-webkit-keyframes rotation_left {
+			0% {
+				-webkit-transform:rotate(0deg);
+			}
+			50% {
+				-webkit-transform:rotate(90deg);
+				left: 37.5%;
+			}
+			100% {
+				-webkit-transform:rotate(90deg);
+				left: 50%;
+			}
+		}
+
+		@-webkit-keyframes rotation_right {
+			0% {
+				-webkit-transform:rotate(0deg);
+			}
+			50% {
+				-webkit-transform:rotate(90deg);
+				left: 37.5%;
+			}
+			100% {
+				-webkit-transform:rotate(90deg);
+				left: 25%;
+			}
+		}
+
+		@-webkit-keyframes rotation_left_back {
+			0% {
+				-webkit-transform: rotate(90deg);
+				left: 50%;
+			}
+			50% {
+				-webkit-transform: rotate(90deg);
+				left: 37.5%;
+			}
+			100% {
+				-webkit-transform: rotate(0deg);
+			}
+		}
+
+		@-webkit-keyframes rotation_right_back {
+			0% {
+				-webkit-transform: rotate(90deg);
+				left: 25%;
+			}
+			50% {
+				-webkit-transform: rotate(90deg);
+				left: 37.5%;
+			}
+			100% {
+				-webkit-transform: rotate(0deg);
+			}
+		}
+
+
+		@-webkit-keyframes text-show {
+			100%{
+				color: rgba(255, 255, 255, 255);
+			}
+		}
+
+		@-webkit-keyframes text-hide {
+			100%{
+				color: rgba(255, 255, 255, 0);
+			}
+		}
+
+		.active-left-circle {
+			animation : rotation_left 1s;
+	    	-webkit-animation : rotation_left 1s;
+	    	-webkit-animation-fill-mode : forwards;	
+		}
+
+		.active-right-circle {
+			animation : rotation_right 1s;
+	    	-webkit-animation : rotation_right 1s;
+	    	-webkit-animation-fill-mode : forwards;	
+		}
+		.active-add-text {
+			-webkit-animation : text-show 1s;
+			-webkit-animation-delay : 0.75s;
+			-webkit-animation-fill-mode : forwards;
+		}
+
+		.active-left-back {
+		    -webkit-animation-delay : 2s;
+			-webkit-animation : rotation_left_back 1s;
+			-webkit-animation-fill-mode : forwards;
+		}
+
+		.active-right-back {
+		    -webkit-animation-delay : 2s;
+			-webkit-animation : rotation_right_back 1s;
+			-webkit-animation-fill-mode : forwards;
+ 		}
+ 		.active-text-hide {
+ 			-webkit-animation : text-hide 2s;
+ 			-webkit-animation-fill-mode : forwards;
+ 		}
+
+
+	</style>
+</head>
+<body>
+	<div id="circle-box">
+		<div id="harf-circle-top" class="circle">
+		</div>
+		<div id="add-text">ADD TAG</div>
+		<div id="harf-circle-bottom" class="circle">
+		</div>
+	</div>
+</body>
+	<script type="text/javascript">
+
+	var is_open = false;
+	var circle_top = document.querySelector('#harf-circle-top');
+    var add_text = document.querySelector('#add-text');
+	var circle_bottom = document.querySelector('#harf-circle-bottom');
+	function animation(){
+		
+		if(is_open == false){
+			circle_top.setAttribute('class',"circle active-left-circle");
+			circle_bottom.setAttribute('class','circle active-right-circle');
+			add_text.setAttribute('class','active-add-text');
+			is_open = true;
+		}else{
+
+			circle_top.setAttribute('class',"circle active-left-back");
+			circle_bottom.setAttribute('class',"circle active-right-back");
+			add_text.setAttribute('class',"active-text-hide");
+			is_open = false;
+		}
+
+	}
+	circle_bottom.onclick = animation;
+	circle_top.onclick = animation;
+
+	</script>
+</html>
